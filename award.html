@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA MVP球员展示 - 奖项详情</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .awards-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .year-select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            min-width: 150px;
+        }
+        
+        .mvp-detail-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #c8102e;
+        }
+        
+        .mvp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .mvp-year {
+            font-size: 2rem;
+            color: #1d428a;
+            font-weight: bold;
+        }
+        
+        .mvp-player {
+            font-size: 1.8rem;
+            color: #c8102e;
+        }
+        
+        .mvp-team {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .mvp-stats {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1d428a;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .mvp-details {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .mvp-details h4 {
+            color: #1d428a;
+            margin-bottom: 10px;
+        }
+        
+        .mvp-highlights {
+            background-color: #fff8e1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .mvp-comparison {
+            background-color: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #0d6efd;
+        }
+        
+        .award-trophy {
+            text-align: center;
+            font-size: 3rem;
+            margin: 20px 0;
+            color: #ffd700;
+        }
+        
+        .vote-results {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .competitors-list {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        
+        .competitors-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">🏀 NBA MVP展示</a>
+            <div class="tagline">2000年以来NBA常规赛MVP球员盘点</div>
+        </div>
+    </header>
+    <nav>
+        <div class="container nav-container">
+            <ul class="main-nav">
+                <li><a href="index.html"><i class="fas fa-home"></i> 主页</a></li>
+                <li><a href="players.html"><i class="fas fa-users"></i> 球员列表</a></li>
+                <li><a href="stats.html"><i class="fas fa-chart-bar"></i> 数据统计</a></li>
+                <li><a href="timeline.html"><i class="fas fa-history"></i> 时间线</a></li>
+                <li><a href="awards.html" class="active"><i class="fas fa-trophy"></i> 奖项详情</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">MVP奖项详情</h1>
+            <p class="page-subtitle">查看每届MVP奖项的详细信息和数据统计</p>
+        </div>
+    </section>
+    <main class="container">
+        <section class="card">
+            <h2>选择年份查看MVP详情</h2>
+            <div class="awards-controls">
+                <select id="year-select" class="year-select">
+                    <option value="2023">2023年 - 乔尔·恩比德</option>
+                    <option value="2022">2022年 - 尼古拉·约基奇</option>
+                    <option value="2021">2021年 - 尼古拉·约基奇</option>
+                    <option value="2020">2020年 - 扬尼斯·阿德托昆博</option>
+                    <option value="2019">2019年 - 扬尼斯·阿德托昆博</option>
+                    <option value="2016">2016年 - 斯蒂芬·库里</option>
+                    <option value="2013">2013年 - 勒布朗·詹姆斯</option>
+                    <option value="2008">2008年 - 科比·布莱恩特</option>
+                </select>
+                
+                <div>
+                    <button class="btn" onclick="loadAwardDetails()">查看奖项详情</button>
+                    <button class="btn btn-secondary" onclick="randomAward()">随机年份</button>
+                </div>
+            </div>
+            
+            <p id="current-award">当前显示：2023年MVP - 乔尔·恩比德</p>
+        </section>
+        <section id="award-details">
+            <div class="mvp-detail-card">
+                <div class="mvp-header">
+                    <div class="mvp-year">2023年MVP</div>
+                    <div class="award-trophy">🏆</div>
+                </div>
+                
+                <h2 class="mvp-player">乔尔·恩比德</h2>
+                <p class="mvp-team">费城76人 | 中锋 | 29岁</p>
+                
+                <div class="mvp-stats">
+                    <h4>获奖赛季数据</h4>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">33.1</div>
+                            <div class="stat-label">场均得分</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">10.2</div>
+                            <div class="stat-label">场均篮板</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.2</div>
+                            <div class="stat-label">场均助攻</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.7</div>
+                            <div class="stat-label">场均盖帽</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">54.8%</div>
+                            <div class="stat-label">投篮命中率</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mvp-highlights">
+                    <h4>赛季亮点</h4>
+                    <ul>
+                        <li>场均得分33.1分，联盟得分王</li>
+                        <li>带领76人取得54胜28负的战绩</li>
+                        <li>成为继哈基姆·奥拉朱旺后首位获得MVP的非洲球员</li>
+                        <li>连续第二个赛季场均得分30+</li>
+                    </ul>
+                </div>
+                
+                <div class="mvp-comparison">
+                    <h4>投票情况</h4>
+                    <p><strong>得票率：</strong>73.0%的第一选票</p>
+                    <p><strong>主要竞争对手：</strong></p>
+                    <ul class="competitors-list">
+                        <li>尼古拉·约基奇 (掘金) - 15.0%的第一选票</li>
+                        <li>扬尼斯·阿德托昆博 (雄鹿) - 12.0%的第一选票</li>
+                    </ul>
+                </div>
+                
+                <div class="mvp-details">
+                    <h4>奖项意义</h4>
+                    <p>恩比德在2023年获得了他的第一个MVP奖项，成为76人队史上继阿伦·艾弗森（2001年）之后第二位获得该荣誉的球员。他的获奖标志着现代中锋的全面复兴，展示了中锋位置在进攻端的多样性和统治力。</p>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <h2>MVP奖项比较</h2>
+            <p>选择两个MVP年份进行比较：</p>
+            
+            <div style="margin: 20px 0;">
+                <select id="award1-select" class="year-select" style="margin-right: 10px;">
+                    <option value="2023">2023年 - 恩比德</option>
+                    <option value="2016">2016年 - 库里</option>
+                    <option value="2013">2013年 - 詹姆斯</option>
+                    <option value="2008">2008年 - 科比</option>
+                </select>
+                
+                <select id="award2-select" class="year-select" style="margin-right: 10px;">
+                    <option value="2016">2016年 - 库里</option>
+                    <option value="2023">2023年 - 恩比德</option>
+                    <option value="2013">2013年 - 詹姆斯</option>
+                    <option value="2008">2008年 - 科比</option>
+                </select>
+                
+                <button class="btn" onclick="compareAwards()">比较奖项</button>
+            </div>
+            
+            <div id="award-comparison"></div>
+        </section>
+        <section class="card">
+            <h2>MVP历史记录</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">4次</div>
+                    <div class="stat-label">单球员最多MVP</div>
+                    <p>勒布朗·詹姆斯</p>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value">22岁</div>
+                    <div class="stat-label">最年轻MVP</div>
+                    <p>德里克·罗斯 (2011)</p>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value">32岁</div>
+                    <div class="stat-label">最年长MVP</div>
+                    <p>史蒂夫·纳什 (2006)</p>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">最高得票率</div>
+                    <p>斯蒂芬·库里 (2016)</p>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value">73胜</div>
+                    <div class="stat-label">最佳战绩</div>
+                    <p>2016年金州勇士</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>网站导航</h3>
+                    <ul>
+                        <li><a href="index.html">主页</a></li>
+                        <li><a href="players.html">球员列表</a></li>
+                        <li><a href="stats.html">数据统计</a></li>
+                        <li><a href="timeline.html">时间线</a></li>
+                        <li><a href="awards.html">奖项详情</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>奖项分类</h3>
+                    <ul>
+                        <li><a href="#year-2023">2023年MVP</a></li>
+                        <li><a href="#year-2016">2016年MVP</a></li>
+                        <li><a href="#year-2013">2013年MVP</a></li>
+                        <li><a href="#year-2008">2008年MVP</a></li>
+                        <li><a href="#year-2001">2001年MVP</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>奖项信息</h3>
+                    <p>MVP奖项由体育记者和播音员投票选出。</p>
+                    <p>每位投票者选择5位球员进行排名。</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© <span class="current-year">2024</span> NBA MVP球员展示网站 | 奖项详情页面</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        const awardData = {
+            '2023': {
+                player: '乔尔·恩比德',
+                team: '费城76人',
+                position: '中锋',
+                age: 29,
+                stats: {
+                    points: 33.1,
+                    rebounds: 10.2,
+                    assists: 4.2,
+                    blocks: 1.7,
+                    fg: 54.8
+                },
+                highlights: [
+                    '场均得分33.1分，联盟得分王',
+                    '带领76人取得54胜28负的战绩',
+                    '成为继哈基姆·奥拉朱旺后首位获得MVP的非洲球员',
+                    '连续第二个赛季场均得分30+'
+                ],
+                voting: '73.0%的第一选票',
+                competitors: [
+                    '尼古拉·约基奇 (掘金) - 15.0%的第一选票',
+                    '扬尼斯·阿德托昆博 (雄鹿) - 12.0%的第一选票'
+                ],
+                description: '恩比德在2023年获得了他的第一个MVP奖项，成为76人队史上继阿伦·艾弗森（2001年）之后第二位获得该荣誉的球员。他的获奖标志着现代中锋的全面复兴。'
+            },
+            '2022': {
+                player: '尼古拉·约基奇',
+                team: '丹佛掘金',
+                position: '中锋',
+                age: 27,
+                stats: {
+                    points: 27.1,
+                    rebounds: 13.8,
+                    assists: 7.9,
+                    blocks: 0.9,
+                    fg: 58.3
+                },
+                highlights: [
+                    '连续第二年获得MVP奖项',
+                    '场均接近三双的数据',
+                    '效率值历史级，PER超过30',
+                    '带领掘金在缺少穆雷的情况下保持竞争力'
+                ],
+                voting: '65.0%的第一选票',
+                competitors: [
+                    '乔尔·恩比德 (76人) - 25.0%的第一选票',
+                    '扬尼斯·阿德托昆博 (雄鹿) - 10.0%的第一选票'
+                ],
+                description: '约基奇成为历史上第13位连续获得MVP的球员，也是首位连续获此殊荣的二轮秀球员。他的传球和组织能力重新定义了中锋位置。'
+            },
+            '2021': {
+                player: '尼古拉·约基奇',
+                team: '丹佛掘金',
+                position: '中锋',
+                age: 26,
+                stats: {
+                    points: 26.4,
+                    rebounds: 10.8,
+                    assists: 8.3,
+                    blocks: 0.7,
+                    fg: 56.6
+                },
+                highlights: [
+                    '成为历史上选秀顺位最低的MVP（第41顺位）',
+                    '场均接近三双的数据',
+                    '投篮命中率、三分命中率、罚球命中率俱佳',
+                    '单赛季完成16次三双'
+                ],
+                voting: '91.0%的第一选票',
+                competitors: [
+                    '乔尔·恩比德 (76人) - 5.0%的第一选票',
+                    '斯蒂芬·库里 (勇士) - 4.0%的第一选票'
+                ],
+                description: '约基奇的获奖标志着组织中锋时代的到来，他以全面的技术和出色的篮球智商赢得了这一荣誉。'
+            },
+            '2020': {
+                player: '扬尼斯·阿德托昆博',
+                team: '密尔沃基雄鹿',
+                position: '大前锋',
+                age: 25,
+                stats: {
+                    points: 29.5,
+                    rebounds: 13.6,
+                    assists: 5.6,
+                    blocks: 1.0,
+                    fg: 55.3
+                },
+                highlights: [
+                    '连续第二年获得MVP奖项',
+                    '场均接近30+14+6的数据',
+                    '带领雄鹿取得联盟最佳战绩',
+                    '同时获得最佳防守球员奖项'
+                ],
+                voting: '85.0%的第一选票',
+                competitors: [
+                    '勒布朗·詹姆斯 (湖人) - 10.0%的第一选票',
+                    '詹姆斯·哈登 (火箭) - 5.0%的第一选票'
+                ],
+                description: '字母哥成为历史上第三位连续获得MVP和DPOY的球员，展示了他在攻防两端的全面统治力。'
+            },
+            '2019': {
+                player: '扬尼斯·阿德托昆博',
+                team: '密尔沃基雄鹿',
+                position: '大前锋',
+                age: 24,
+                stats: {
+                    points: 27.7,
+                    rebounds: 12.5,
+                    assists: 5.9,
+                    blocks: 1.5,
+                    fg: 57.8
+                },
+                highlights: [
+                    '首次获得MVP奖项',
+                    '带领雄鹿取得60胜22负的联盟最佳战绩',
+                    '从希腊二级联赛到NBA MVP的励志故事',
+                    '身体天赋和运动能力的完美展现'
+                ],
+                voting: '78.0%的第一选票',
+                competitors: [
+                    '詹姆斯·哈登 (火箭) - 20.0%的第一选票',
+                    '保罗·乔治 (雷霆) - 2.0%的第一选票'
+                ],
+                description: '字母哥的获奖标志着国际球员在NBA的进一步崛起，他的成长故事激励了无数年轻球员。'
+            },
+            '2016': {
+                player: '斯蒂芬·库里',
+                team: '金州勇士',
+                position: '控球后卫',
+                age: 28,
+                stats: {
+                    points: 30.1,
+                    rebounds: 5.4,
+                    assists: 6.7,
+                    steals: 2.1,
+                    fg: 50.4
+                },
+                highlights: [
+                    '全票当选MVP，历史第一人',
+                    '单赛季402个三分球，历史纪录',
+                    '带领勇士取得73胜9负的历史最佳战绩',
+                    '场均得分30+，投篮命中率50-40-90'
+                ],
+                voting: '100%的第一选票',
+                competitors: [
+                    '科怀·伦纳德 (马刺)',
+                    '勒布朗·詹姆斯 (骑士)'
+                ],
+                description: '库里改变了现代篮球的打法，他的三分球能力引领了小球时代的到来，这个赛季是他个人和球队的巅峰。'
+            },
+            '2013': {
+                player: '勒布朗·詹姆斯',
+                team: '迈阿密热火',
+                position: '小前锋',
+                age: 28,
+                stats: {
+                    points: 26.8,
+                    rebounds: 8.0,
+                    assists: 7.3,
+                    steals: 1.7,
+                    fg: 56.5
+                },
+                highlights: [
+                    '第四次获得MVP奖项',
+                    '带领热火取得66胜16负的队史最佳战绩',
+                    '27连胜的历史第二长连胜纪录',
+                    '投篮命中率56.5%，生涯最高'
+                ],
+                voting: '99.0%的第一选票',
+                competitors: [
+                    '凯文·杜兰特 (雷霆)',
+                    '卡梅隆·安东尼 (尼克斯)'
+                ],
+                description: '这是詹姆斯在热火的第二个MVP，也是他个人统治力的巅峰时期，他展示了历史级别的全面能力。'
+            },
+            '2008': {
+                player: '科比·布莱恩特',
+                team: '洛杉矶湖人',
+                position: '得分后卫',
+                age: 29,
+                stats: {
+                    points: 28.3,
+                    rebounds: 6.3,
+                    assists: 5.4,
+                    steals: 1.8,
+                    fg: 45.9
+                },
+                highlights: [
+                    '职业生涯唯一一次MVP',
+                    '带领湖人取得57胜25负的战绩',
+                    '赛季场均28.3分，得分王有力竞争者',
+                    '在保罗·加索尔加盟后带领湖人重返争冠行列'
+                ],
+                voting: '82.0%的第一选票',
+                competitors: [
+                    '克里斯·保罗 (黄蜂)',
+                    '凯文·加内特 (凯尔特人)'
+                ],
+                description: '这是科比职业生涯唯一一次MVP，也是对他个人能力和领导力的最大认可，标志着他从超级得分手到球队领袖的转变。'
+            }
+        };
+        function loadAwardDetails() {
+            const year = document.getElementById('year-select').value;
+            const data = awardData[year];
+            
+            if (!data) return;
+            
+            const detailsDiv = document.getElementById('award-details');
+            detailsDiv.innerHTML = `
+                <div class="mvp-detail-card">
+                    <div class="mvp-header">
+                        <div class="mvp-year">${year}年MVP</div>
+                        <div class="award-trophy">🏆</div>
+                    </div>
+                    
+                    <h2 class="mvp-player">${data.player}</h2>
+                    <p class="mvp-team">${data.team} | ${data.position} | ${data.age}岁</p>
+                    
+                    <div class="mvp-stats">
+                        <h4>获奖赛季数据</h4>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">${data.stats.points}</div>
+                                <div class="stat-label">场均得分</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${data.stats.rebounds}</div>
+                                <div class="stat-label">场均篮板</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${data.stats.assists}</div>
+                                <div class="stat-label">场均助攻</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${data.stats.blocks || data.stats.steals || 'N/A'}</div>
+                                <div class="stat-label">场均${data.stats.blocks ? '盖帽' : data.stats.steals ? '抢断' : '数据'}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${data.stats.fg}%</div>
+                                <div class="stat-label">投篮命中率</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mvp-highlights">
+                        <h4>赛季亮点</h4>
+                        <ul>
+                            ${data.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="mvp-comparison">
+                        <h4>投票情况</h4>
+                        <p><strong>得票率：</strong>${data.voting}</p>
+                        <p><strong>主要竞争对手：</strong></p>
+                        <ul class="competitors-list">
+                            ${data.competitors.map(competitor => `<li>${competitor}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="mvp-details">
+                        <h4>奖项意义</h4>
+                        <p>${data.description}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('current-award').textContent = `当前显示：${year}年MVP - ${data.player}`;
+            };
+        function randomAward() {
+            const years = Object.keys(awardData);
+            const randomYear = years[Math.floor(Math.random() * years.length)];
+            
+            document.getElementById('year-select').value = randomYear;
+            loadAwardDetails();
+        }
+        function compareAwards() {
+            const year1 = document.getElementById('award1-select').value;
+            const year2 = document.getElementById('award2-select').value;
+            
+            if (year1 === year2) {
+                alert('请选择两个不同的年份进行比较');
+                return;
+            }
+            
+            const data1 = awardData[year1];
+            const data2 = awardData[year2];
+            
+            if (!data1 || !data2) return;
+            
+            const comparisonDiv = document.getElementById('award-comparison');
+            comparisonDiv.innerHTML = `
+                <h3>${year1}年MVP vs ${year2}年MVP</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="comparison-card">
+                        <h4>${data1.player}</h4>
+                        <p>${year1}年 | ${data1.team}</p>
+                        <p><strong>数据：</strong>${data1.stats.points}分 ${data1.stats.rebounds}板 ${data1.stats.assists}助</p>
+                        <p><strong>年龄：</strong>${data1.age}岁</p>
+                        <p><strong>得票率：</strong>${data1.voting}</p>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>${data2.player}</h4>
+                        <p>${year2}年 | ${data2.team}</p>
+                        <p><strong>数据：</strong>${data2.stats.points}分 ${data2.stats.rebounds}板 ${data2.stats.assists}助</p>
+                        <p><strong>年龄：</strong>${data2.age}岁</p>
+                        <p><strong>得票率：</strong>${data2.voting}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h4>比较分析</h4>
+                    <p><strong>数据对比：</strong>${data1.player}场均得分${data1.stats.points}分，${data2.player}场均得分${data2.stats.points}分。</p>
+                    <p><strong>年龄对比：</strong>${data1.player}获奖时${data1.age}岁，${data2.player}获奖时${data2.age}岁。</p>
+                    <p><strong>历史意义：</strong>${getAwardComparison(year1, year2)}</p>
+                </div>
+            `;
+        }
+        
+        function getAwardComparison(year1, year2) {
+            const comparisons = {
+                '2023-2016': '2023年恩比德的获奖标志着中锋位置的复兴，而2016年库里的获奖则代表了三分革命的高峰。',
+                '2023-2013': '2023年恩比德作为中锋获奖，展示了内线球员的全面性；2013年詹姆斯则是全能前锋的代表。',
+                '2016-2008': '2016年库里的全票MVP和三分球引领了小球时代，2008年科比的获奖则代表了传统得分后卫的巅峰。',
+                '2020-2013': '2020年字母哥的连续MVP展示了国际球员的崛起，2013年詹姆斯的MVP则是他个人统治力的体现。'
+            };
+            const key1 = `${year1}-${year2}`;
+            const key2 = `${year2}-${year1}`;           
+            return comparisons[key1] || comparisons[key2] || '这两个MVP奖项代表了不同时代的篮球风格和球员特点。';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAwardDetails();
+        });
+    </script>
+</body>
+</html>
