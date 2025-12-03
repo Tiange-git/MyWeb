@@ -35,16 +35,16 @@
 
     <main class="container">
         <section class="card welcome-section">
-            <h2>欢迎来到NBA MVP世界</h2>
+            <h2>欢迎来到NBA MVP陈列室</h2>
             <p>NBA最有价值球员奖（MVP）是每年颁发给在常规赛中表现最出色的球员。这是NBA个人最高荣誉之一。</p>
             <p>本网站展示了2000年以来的所有MVP得主，包括他们的基本信息、获奖年份、统计数据等。</p>
             <div class="quick-stats">
                 <div class="stat">
-                    <h3>12</h3>
+                    <h3>12位</h3>
                     <p>不同球员</p>
                 </div>
                 <div class="stat">
-                    <h3>24</h3>
+                    <h3>24次</h3>
                     <p>MVP奖项</p>
                 </div>
                 <div class="stat">
@@ -53,14 +53,6 @@
                 </div>
             </div>
         </section>
-
-        <section class="card">
-            <h2>特色MVP球员</h2>
-            <div class="featured-players-container" id="featured-players">
-            </div>
-            <a href="players.html" class="btn">查看全部球员 →</a>
-        </section>
-
         <section>
             <h2>探索网站内容</h2>
             <div>
@@ -86,21 +78,6 @@
                 </a>
             </div>
         </section>
-
-        <section>
-            <h2>今日MVP聚焦</h2>
-            <div>
-                <div>
-                    <h3>勒布朗·詹姆斯</h3>
-                    <p class="spotlight-team" id="spotlight-team">洛杉矶湖人</p>
-                    <p class="spotlight-desc" id="spotlight-desc">4次MVP得主，历史得分王，全能战士的代表</p>
-                    <button class="btn" onclick="changeSpotlight()">随机展示另一位MVP</button>
-                </div>
-                <div class="spotlight-image">
-                    <i class="fas fa-basketball-ball fa-5x"></i>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>
@@ -119,44 +96,5 @@
             </div>
         </div>
     </footer>
-
-    <script src="main.js"></script>
-    <script>
-        const spotlightPlayers = [
-            {
-                name: "勒布朗·詹姆斯",
-                team: "洛杉矶湖人",
-                desc: "4次MVP得主，历史得分王，全能战士的代表"
-            },
-            {
-                name: "斯蒂芬·库里",
-                team: "金州勇士",
-                desc: "2次MVP得主，三分革命引领者，改变了篮球打法"
-            },
-            {
-                name: "尼古拉·约基奇",
-                team: "丹佛掘金",
-                desc: "2次MVP得主，技术全面的组织中锋，效率值历史级"
-            },
-            {
-                name: "科比·布莱恩特",
-                team: "洛杉矶湖人",
-                desc: "2008年MVP，得分能力超群，5次总冠军得主"
-            }
-        ];
-        
-        function changeSpotlight() {
-            const randomIndex = Math.floor(Math.random() * spotlightPlayers.length);
-            const player = spotlightPlayers[randomIndex];
-            
-            document.getElementById('spotlight-name').textContent = player.name;
-            document.getElementById('spotlight-team').textContent = player.team;
-            document.getElementById('spotlight-desc').textContent = player.desc;
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            changeSpotlight();
-        });
-    </script>
 </body>
 </html>
