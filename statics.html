@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA MVP球员展示 - 数据统计</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            color: #1d428a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c8102e;
+        }
+        
+        .chart-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .chart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .chart-label {
+            width: 150px;
+            font-weight: bold;
+        }
+        
+        .chart-bar-container {
+            flex-grow: 1;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            height: 25px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        
+        .chart-bar {
+            background-color: #1d428a;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .chart-value {
+            width: 60px;
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        .sortable-table th {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .sortable-table th:hover {
+            background-color: #15315e;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background-color: #1d428a;
+            color: white;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">🏀 NBA MVP展示</a>
+            <div class="tagline">2000年以来NBA常规赛MVP球员盘点</div>
+        </div>
+    </header>
+    <nav>
+        <div class="container nav-container">
+            <ul class="main-nav">
+                <li><a href="index.html"><i class="fas fa-home"></i> 主页</a></li>
+                <li><a href="players.html"><i class="fas fa-users"></i> 球员列表</a></li>
+                <li><a href="stats.html" class="active"><i class="fas fa-chart-bar"></i> 数据统计</a></li>
+                <li><a href="timeline.html"><i class="fas fa-history"></i> 时间线</a></li>
+                <li><a href="awards.html"><i class="fas fa-trophy"></i> 奖项详情</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">数据统计</h1>
+            <p class="page-subtitle">MVP球员的各项数据统计和分析</p>
+        </div>
+    </section>
+    <main class="container">
+        <section class="card">
+            <h2>统计概览</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>🏆 获奖次数</h3>
+                    <div class="chart-container" data-chart="mvp-count">
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>🏀 球队分布</h3>
+                    <div class="chart-container" data-chart="team-distribution">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <h2>详细数据统计</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📊 获奖次数排名</h3>
+                    <table class="stats-table sortable-table">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>球员</th>
+                                <th>获奖次数</th>
+                                <th>年份</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>勒布朗·詹姆斯</td>
+                                <td>4</td>
+                                <td>2009, 2010, 2012, 2013</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>斯蒂芬·库里</td>
+                                <td>2</td>
+                                <td>2015, 2016</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>史蒂夫·纳什</td>
+                                <td>2</td>
+                                <td>2005, 2006</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>蒂姆·邓肯</td>
+                                <td>2</td>
+                                <td>2002, 2003</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>其他球员</td>
+                                <td>1</td>
+                                <td>各自获奖年份</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🏀 场均数据排名</h3>
+                    <table class="stats-table sortable-table">
+                        <thead>
+                            <tr>
+                                <th>球员</th>
+                                <th>得分</th>
+                                <th>篮板</th>
+                                <th>助攻</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>乔尔·恩比德</td>
+                                <td>33.1</td>
+                                <td>10.2</td>
+                                <td>4.2</td>
+                            </tr>
+                            <tr>
+                                <td>拉塞尔·威斯布鲁克</td>
+                                <td>31.6</td>
+                                <td>10.7</td>
+                                <td>10.4</td>
+                            </tr>
+                            <tr>
+                                <td>斯蒂芬·库里</td>
+                                <td>30.1</td>
+                                <td>5.4</td>
+                                <td>6.7</td>
+                            </tr>
+                            <tr>
+                                <td>扬尼斯·阿德托昆博</td>
+                                <td>29.5</td>
+                                <td>13.6</td>
+                                <td>5.6</td>
+                            </tr>
+                            <tr>
+                                <td>勒布朗·詹姆斯</td>
+                                <td>27.2</td>
+                                <td>7.5</td>
+                                <td>7.3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <h2>位置分布统计</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📍 位置分布</h3>
+                    <div class="chart-container">
+                        <div class="chart-item">
+                            <div class="chart-label">控球后卫</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 33%">33%</div>
+                            </div>
+                            <div class="chart-value">4位</div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">得分后卫</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 8%">8%</div>
+                            </div>
+                            <div class="chart-value">1位</div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">小前锋</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 17%">17%</div>
+                            </div>
+                            <div class="chart-value">2位</div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">大前锋</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 33%">33%</div>
+                            </div>
+                            <div class="chart-value">4位</div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">中锋</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 8%">8%</div>
+                            </div>
+                            <div class="chart-value">1位</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🌍 国籍分布</h3>
+                    <div class="chart-container">
+                        <div class="chart-item">
+                            <div class="chart-label">美国</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 83%">83%</div>
+                            </div>
+                            <div class="chart-value">10位</div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">加拿大</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 8%">8%</div>
+                            </div>
+                            <div class="chart-value">1位</div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">德国</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 8%">8%</div>
+                            </div>
+                            <div class="chart-value">1位</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <h2>年龄统计</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📅 获奖年龄统计</h3>
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>统计项</th>
+                                <th>数据</th>
+                                <th>球员</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>最年轻MVP</td>
+                                <td>22岁</td>
+                                <td>德里克·罗斯 (2011)</td>
+                            </tr>
+                            <tr>
+                                <td>最年长MVP</td>
+                                <td>32岁</td>
+                                <td>史蒂夫·纳什 (2006)</td>
+                            </tr>
+                            <tr>
+                                <td>平均获奖年龄</td>
+                                <td>27.5岁</td>
+                                <td>所有MVP球员</td>
+                            </tr>
+                            <tr>
+                                <td>30岁以上获奖</td>
+                                <td>4位</td>
+                                <td>纳什、邓肯等</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>📈 年龄趋势</h3>
+                    <div class="chart-container">
+                        <div class="chart-item">
+                            <div class="chart-label">2000-2004</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 60%">平均28.2岁</div>
+                            </div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">2005-2009</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 55%">平均27.8岁</div>
+                            </div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">2010-2014</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 50%">平均26.5岁</div>
+                            </div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">2015-2019</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 45%">平均26.0岁</div>
+                            </div>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-label">2020-2024</div>
+                            <div class="chart-bar-container">
+                                <div class="chart-bar" style="width: 48%">平均26.8岁</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">趋势：MVP获奖年龄呈现年轻化趋势</p>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <h2>数据比较</h2>
+            <p>选择两位球员进行比较：</p>
+            
+            <div style="margin: 20px 0;">
+                <select id="player1-select" class="player-select" style="padding: 10px; margin-right: 10px;">
+                    <option value="勒布朗·詹姆斯">勒布朗·詹姆斯</option>
+                    <option value="斯蒂芬·库里">斯蒂芬·库里</option>
+                    <option value="尼古拉·约基奇">尼古拉·约基奇</option>
+                    <option value="科比·布莱恩特">科比·布莱恩特</option>
+                </select>
+                
+                <select id="player2-select" class="player-select" style="padding: 10px; margin-right: 10px;">
+                    <option value="斯蒂芬·库里">斯蒂芬·库里</option>
+                    <option value="勒布朗·詹姆斯">勒布朗·詹姆斯</option>
+                    <option value="尼古拉·约基奇">尼古拉·约基奇</option>
+                    <option value="科比·布莱恩特">科比·布莱恩特</option>
+                </select>
+                
+                <button class="btn" onclick="comparePlayers()">比较球员</button>
+            </div>
+            
+            <div id="comparison-results"></div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>网站导航</h3>
+                    <ul>
+                        <li><a href="index.html">主页</a></li>
+                        <li><a href="players.html">球员列表</a></li>
+                        <li><a href="stats.html">数据统计</a></li>
+                        <li><a href="timeline.html">时间线</a></li>
+                        <li><a href="awards.html">奖项详情</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>统计分类</h3>
+                    <ul>
+                        <li><a href="#">获奖次数</a></li>
+                        <li><a href="#">场均数据</a></li>
+                        <li><a href="#">位置分布</a></li>
+                        <li><a href="#">年龄统计</a></li>
+                        <li><a href="#">国籍分布</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>数据说明</h3>
+                    <p>所有统计数据截止到2023-2024赛季。</p>
+                    <p>数据基于NBA官方公布的信息。</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© <span class="current-year">2024</span> NBA MVP球员展示网站 | 数据统计页面</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        function comparePlayers() {
+            const player1 = document.getElementById('player1-select').value;
+            const player2 = document.getElementById('player2-select').value;
+            
+            if (player1 === player2) {
+                alert('请选择两位不同的球员进行比较');
+                return;
+            }
+            const playerData = {
+                '勒布朗·詹姆斯': {
+                    mvps: 4,
+                    points: 27.2,
+                    rebounds: 7.5,
+                    assists: 7.3,
+                    years: '2009, 2010, 2012, 2013'
+                },
+                '斯蒂芬·库里': {
+                    mvps: 2,
+                    points: 24.3,
+                    rebounds: 4.6,
+                    assists: 6.5,
+                    years: '2015, 2016'
+                },
+                '尼古拉·约基奇': {
+                    mvps: 2,
+                    points: 26.4,
+                    rebounds: 12.4,
+                    assists: 9.0,
+                    years: '2021, 2022'
+                },
+                '科比·布莱恩特': {
+                    mvps: 1,
+                    points: 28.3,
+                    rebounds: 6.3,
+                    assists: 5.4,
+                    years: '2008'
+                }
+            };
+            
+            const data1 = playerData[player1];
+            const data2 = playerData[player2];
+            
+            if (!data1 || !data2) {
+                alert('无法找到球员数据');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('comparison-results');
+            resultsDiv.innerHTML = `
+                <h3>${player1} vs ${player2}</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>比较项目</th>
+                        <th>${player1}</th>
+                        <th>${player2}</th>
+                    </tr>
+                    <tr>
+                        <td>MVP次数</td>
+                        <td>${data1.mvps}次</td>
+                        <td>${data2.mvps}次</td>
+                    </tr>
+                    <tr>
+                        <td>获奖年份</td>
+                        <td>${data1.years}</td>
+                        <td>${data2.years}</td>
+                    </tr>
+                    <tr>
+                        <td>场均得分</td>
+                        <td>${data1.points}</td>
+                        <td>${data2.points}</td>
+                    </tr>
+                    <tr>
+                        <td>场均篮板</td>
+                        <td>${data1.rebounds}</td>
+                        <td>${data2.rebounds}</td>
+                    </tr>
+                    <tr>
+                        <td>场均助攻</td>
+                        <td>${data1.assists}</td>
+                        <td>${data2.assists}</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 15px;">
+                    <strong>总结：</strong>${getComparisonSummary(player1, player2, data1, data2)}
+                </p>
+            `;
+        }
+        
+        function getComparisonSummary(player1, player2, data1, data2) {
+            let summary = '';
+            
+            if (data1.mvps > data2.mvps) {
+                summary += `${player1}的MVP次数更多(${data1.mvps}次 vs ${data2.mvps}次)。`;
+            } else if (data2.mvps > data1.mvps) {
+                summary += `${player2}的MVP次数更多(${data2.mvps}次 vs ${data1.mvps}次)。`;
+            } else {
+                summary += '两位球员的MVP次数相同。';
+            }
+            
+            if (data1.points > data2.points) {
+                summary += `${player1}的场均得分更高(${data1.points}分 vs ${data2.points}分)。`;
+            } else if (data2.points > data1.points) {
+                summary += `${player2}的场均得分更高(${data2.points}分 vs ${data1.points}分)。`;
+            }
+            
+            return summary;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const tables = document.querySelectorAll('.sortable-table th');
+            
+            tables.forEach(th => {
+                th.addEventListener('click', function() {
+                    const table = this.closest('table');
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    const colIndex = Array.from(this.parentNode.children).indexOf(this);
+                    const isAscending = this.classList.contains('asc');
+                    rows.sort((a, b) => {
+                        const aText = a.children[colIndex].textContent;
+                        const bText = b.children[colIndex].textContent;
+                        const aNum = parseFloat(aText);
+                        const bNum = parseFloat(bText);
+                        
+                        if (!isNaN(aNum) && !isNaN(bNum)) {
+                            return isAscending ? bNum - aNum : aNum - bNum;
+                        } else {
+                            return isAscending ? bText.localeCompare(aText) : aText.localeCompare(bText);
+                        }
+                    });
+                    table.querySelectorAll('th').forEach(th => th.classList.remove('asc', 'desc'));
+                    this.classList.add(isAscending ? 'desc' : 'asc');
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
