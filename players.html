@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA MVP球员展示 - 球员列表</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .players-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .search-box {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 300px;
+            max-width: 100%;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .player-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .player-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .player-name {
+            color: #1d428a;
+            margin-bottom: 5px;
+        }
+        
+        .player-team {
+            color: #c8102e;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .player-years {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .player-stats {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .player-status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-retired {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">🏀 NBA MVP展示</a>
+            <div class="tagline">2000年以来NBA常规赛MVP球员盘点</div>
+        </div>
+    </header>
+    <nav>
+        <div class="container nav-container">
+            <ul class="main-nav">
+                <li><a href="index.html"><i class="fas fa-home"></i> 主页</a></li>
+                <li><a href="players.html" class="active"><i class="fas fa-users"></i> 球员列表</a></li>
+                <li><a href="stats.html"><i class="fas fa-chart-bar"></i> 数据统计</a></li>
+                <li><a href="timeline.html"><i class="fas fa-history"></i> 时间线</a></li>
+                <li><a href="awards.html"><i class="fas fa-trophy"></i> 奖项详情</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">MVP球员列表</h1>
+            <p class="page-subtitle">2000年以来所有NBA常规赛MVP球员的详细信息</p>
+        </div>
+    </section>
+    <main class="container">
+        <section class="card">
+            <h2>查找和筛选球员</h2>
+            <div class="players-controls">
+                <input type="text" id="player-search" class="search-box" placeholder="搜索球员或球队...">
+                
+                <div class="filter-buttons">
+                    <button class="btn filter-btn active" data-filter="all">全部</button>
+                    <button class="btn filter-btn" data-filter="active">现役球员</button>
+                    <button class="btn filter-btn" data-filter="retired">已退役</button>
+                    <button class="btn filter-btn" data-filter="multiple">多次获奖</button>
+                </div>
+            </div>
+            
+            <p id="player-count">共找到12位球员</p>
+        </section>
+        <section class="card">
+            <h2>球员信息</h2>
+            <div class="player-container">
+                <div class="player-card" data-status="retired">
+                    <h3 class="player-name">蒂姆·邓肯</h3>
+                    <p class="player-team">圣安东尼奥马刺</p>
+                    <span class="player-years">MVP年份: 2002, 2003</span>
+                    <p class="player-stats">场均数据: 23.3分 12.9篮板 3.9助攻</p>
+                    <p>基本功扎实，防守出色，5次总冠军得主。</p>
+                    <span class="player-status status-retired">已退役</span>
+                </div>
+                <div class="player-card" data-status="retired">
+                    <h3 class="player-name">凯文·加内特</h3>
+                    <p class="player-team">明尼苏达森林狼</p>
+                    <span class="player-years">MVP年份: 2004</span>
+                    <p class="player-stats">场均数据: 24.2分 13.9篮板 5.0助攻</p>
+                    <p>全能型内线，防守覆盖面积大，激情四射。</p>
+                    <span class="player-status status-retired">已退役</span>
+                </div>
+                <div class="player-card" data-status="retired">
+                    <h3 class="player-name">史蒂夫·纳什</h3>
+                    <p class="player-team">菲尼克斯太阳</p>
+                    <span class="player-years">MVP年份: 2005, 2006</span>
+                    <p class="player-stats">场均数据: 15.5分 11.2助攻 3.3篮板</p>
+                    <p>传球大师，投篮精准，引领跑轰战术。</p>
+                    <span class="player-status status-retired">已退役</span>
+                </div>
+                <div class="player-card" data-status="retired">
+                    <h3 class="player-name">德克·诺维茨基</h3>
+                    <p class="player-team">达拉斯小牛</p>
+                    <span class="player-years">MVP年份: 2007</span>
+                    <p class="player-stats">场均数据: 24.6分 8.9篮板 3.4助攻</p>
+                    <p>投篮精准的七尺长人，招牌"金鸡独立"。</p>
+                    <span class="player-status status-retired">已退役</span>
+                </div>
+                <div class="player-card" data-status="retired">
+                    <h3 class="player-name">科比·布莱恩特</h3>
+                    <p class="player-team">洛杉矶湖人</p>
+                    <span class="player-years">MVP年份: 2008</span>
+                    <p class="player-stats">场均数据: 28.3分 6.3篮板 5.4助攻</p>
+                    <p>得分能力超群，关键球专家，湖人传奇。</p>
+                    <span class="player-status status-retired">已退役</span>
+                </div>
+                <div class="player-card" data-status="active" data-multiple="true">
+                    <h3 class="player-name">勒布朗·詹姆斯</h3>
+                    <p class="player-team">骑士/热火/湖人</p>
+                    <span class="player-years">MVP年份: 2009, 2010, 2012, 2013</span>
+                    <p class="player-stats">场均数据: 27.2分 7.5篮板 7.3助攻</p>
+                    <p>4次MVP得主，历史得分王，全能战士。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+                <div class="player-card" data-status="active">
+                    <h3 class="player-name">德里克·罗斯</h3>
+                    <p class="player-team">芝加哥公牛</p>
+                    <span class="player-years">MVP年份: 2011</span>
+                    <p class="player-stats">场均数据: 25.0分 7.7助攻 4.1篮板</p>
+                    <p>最年轻MVP，突破能力极强，速度惊人。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+                <div class="player-card" data-status="active" data-multiple="true">
+                    <h3 class="player-name">斯蒂芬·库里</h3>
+                    <p class="player-team">金州勇士</p>
+                    <span class="player-years">MVP年份: 2015, 2016</span>
+                    <p class="player-stats">场均数据: 30.1分 6.7助攻 5.4篮板</p>
+                    <p>历史最佳三分射手，改变篮球打法。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+                <div class="player-card" data-status="active">
+                    <h3 class="player-name">拉塞尔·威斯布鲁克</h3>
+                    <p class="player-team">俄克拉荷马雷霆</p>
+                    <span class="player-years">MVP年份: 2017</span>
+                    <p class="player-stats">场均数据: 31.6分 10.7篮板 10.4助攻</p>
+                    <p>赛季场均三双，爆发力强，全能后卫。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+                <div class="player-card" data-status="active" data-multiple="true">
+                    <h3 class="player-name">扬尼斯·阿德托昆博</h3>
+                    <p class="player-team">密尔沃基雄鹿</p>
+                    <span class="player-years">MVP年份: 2019, 2020</span>
+                    <p class="player-stats">场均数据: 29.5分 13.6篮板 5.6助攻</p>
+                    <p>希腊怪物，身体天赋惊人，攻防一体。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+                <div class="player-card" data-status="active" data-multiple="true">
+                    <h3 class="player-name">尼古拉·约基奇</h3>
+                    <p class="player-team">丹佛掘金</p>
+                    <span class="player-years">MVP年份: 2021, 2022</span>
+                    <p class="player-stats">场均数据: 26.4分 12.4篮板 9.0助攻</p>
+                    <p>组织中锋，技术全面，效率值历史级。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+                <div class="player-card" data-status="active">
+                    <h3 class="player-name">乔尔·恩比德</h3>
+                    <p class="player-team">费城76人</p>
+                    <span class="player-years">MVP年份: 2023</span>
+                    <p class="player-stats">场均数据: 33.1分 10.2篮板 4.2助攻</p>
+                    <p>得分王，内线技术全面，攻防俱佳。</p>
+                    <span class="player-status status-active">现役</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>网站导航</h3>
+                    <ul>
+                        <li><a href="index.html">主页</a></li>
+                        <li><a href="players.html">球员列表</a></li>
+                        <li><a href="stats.html">数据统计</a></li>
+                        <li><a href="timeline.html">时间线</a></li>
+                        <li><a href="awards.html">奖项详情</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>球员分类</h3>
+                    <ul>
+                        <li><a href="#">控球后卫</a></li>
+                        <li><a href="#">得分后卫</a></li>
+                        <li><a href="#">小前锋</a></li>
+                        <li><a href="#">大前锋</a></li>
+                        <li><a href="#">中锋</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>数据信息</h3>
+                    <p>所有球员数据为获奖赛季场均数据。</p>
+                    <p>状态信息更新至2024年3月。</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© <span class="current-year">2024</span> NBA MVP球员展示网站 | 球员列表页面</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+       function updatePlayerCount() {
+            const visiblePlayers = document.querySelectorAll('.player-card[style*="display: block"], .player-card:not([style*="display: none"])').length;
+            const totalPlayers = document.querySelectorAll('.player-card').length;
+            
+            document.getElementById('player-count').textContent = `显示 ${visiblePlayers} 位球员 (共 ${totalPlayers} 位)`;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePlayerCount();
+            const searchBox = document.getElementById('player-search');
+            const playerCards = document.querySelectorAll('.player-card');
+            
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                let visibleCount = 0;
+                
+                playerCards.forEach(card => {
+                    const name = card.querySelector('.player-name').textContent.toLowerCase();
+                    const team = card.querySelector('.player-team').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || team.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                document.getElementById('player-count').textContent = `显示 ${visibleCount} 位球员 (共 ${playerCards.length} 位)`;
+            });
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    let visibleCount = 0;
+                    
+                    playerCards.forEach(card => {
+                        const status = card.getAttribute('data-status');
+                        const isMultiple = card.hasAttribute('data-multiple');
+                        
+                        if (filter === 'all' || 
+                            (filter === 'active' && status === 'active') ||
+                            (filter === 'retired' && status === 'retired') ||
+                            (filter === 'multiple' && isMultiple)) {
+                            card.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    document.getElementById('player-count').textContent = `显示 ${visibleCount} 位球员 (共 ${playerCards.length} 位)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
