@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA MVP球员展示 - 时间线</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #1d428a, #c8102e);
+        }
+        
+        .timeline-item {
+            width: calc(50% - 40px);
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            margin-left: 0;
+            margin-right: auto;
+            padding-right: 60px;
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) {
+            margin-left: auto;
+            margin-right: 0;
+            padding-left: 60px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: #1d428a;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px #c8102e;
+        }
+        
+        .timeline-item:nth-child(odd)::before {
+            right: -10px;
+        }
+        
+        .timeline-item:nth-child(even)::before {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid #1d428a;
+        }
+        
+        .timeline-year {
+            background-color: #c8102e;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-player {
+            font-size: 1.5rem;
+            color: #1d428a;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-team {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-details {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .timeline-details p {
+            margin-bottom: 10px;
+        }
+        
+        .timeline-period {
+            text-align: center;
+            margin: 60px 0 40px;
+            position: relative;
+        }
+        
+        .timeline-period h3 {
+            display: inline-block;
+            background-color: #1d428a;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+        }
+        
+        .timeline-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+                padding-left: 30px;
+                text-align: left;
+            }
+            
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                margin-left: 80px;
+                padding-right: 0;
+                padding-left: 30px;
+                text-align: left;
+            }
+            
+            .timeline-item::before {
+                left: 20px;
+                right: auto;
+            }
+            
+            .timeline-period h3 {
+                font-size: 1.1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">🏀 NBA MVP展示</a>
+            <div class="tagline">2000年以来NBA常规赛MVP球员盘点</div>
+        </div>
+    </header>
+    <nav>
+        <div class="container nav-container">
+            <ul class="main-nav">
+                <li><a href="index.html"><i class="fas fa-home"></i> 主页</a></li>
+                <li><a href="players.html"><i class="fas fa-users"></i> 球员列表</a></li>
+                <li><a href="stats.html"><i class="fas fa-chart-bar"></i> 数据统计</a></li>
+                <li><a href="timeline.html" class="active"><i class="fas fa-history"></i> 时间线</a></li>
+                <li><a href="awards.html"><i class="fas fa-trophy"></i> 奖项详情</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">MVP时间线</h1>
+            <p class="page-subtitle">按年份查看NBA常规赛MVP的演变历程</p>
+        </div>
+    </section>
+    <main class="container">
+        <section class="card">
+            <h2>时间线说明</h2>
+            <p>本时间线展示了2000年以来NBA常规赛MVP的演变过程。点击任意年份可以查看该年份MVP的详细信息。</p>
+            <div class="timeline-controls">
+                <button class="btn" onclick="expandAll()">展开所有详情</button>
+                <button class="btn" onclick="collapseAll()">收起所有详情</button>
+                <button class="btn" onclick="scrollToYear(2023)">跳转到2023年</button>
+            </div>
+        </section>
+        <section class="card">
+            <h2>2000-2024 MVP时间线</h2>
+            <div class="timeline-period">
+                <h3>2000-2004：传统内线时代</h3>
+            </div>
+            
+            <div class="timeline">
+                <!-- 2000年 -->
+                <div class="timeline-item" id="year-2000">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/afa7-cfbdd39ae5947fab4bb456ff16e5ccdf.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2000</div>
+                        <div class="timeline-player">沙奎尔·奥尼尔</div>
+                        <div class="timeline-team">洛杉矶湖人</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>29.7分，13.6篮板，3.8助攻</p>
+                            <p><strong>特点：</strong>最具统治力的中锋，带领湖人开启三连冠</p>
+                            <p><strong>赛季战绩：</strong>67胜15负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2000')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2001年 -->
+                <div class="timeline-item" id="year-2001">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/屏幕截图_3-12-2025_21546_127.0.0.1.jpg" loading="lazy">
+                        </div>    
+                        <div class="timeline-year">2001</div>
+                        <div class="timeline-player">阿伦·艾弗森</div>
+                        <div class="timeline-team">费城76人</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>31.1分，4.6助攻，3.8篮板</p>
+                            <p><strong>特点：</strong>最矮的MVP，得分能力超强</p>
+                            <p><strong>赛季战绩：</strong>56胜26负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2001')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2002年 -->
+                <div class="timeline-item" id="year-2002">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/OIP-C.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2002</div>
+                        <div class="timeline-player">蒂姆·邓肯</div>
+                        <div class="timeline-team">圣安东尼奥马刺</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>25.5分，12.7篮板，3.7助攻</p>
+                            <p><strong>特点：</strong>基本功扎实，防守核心</p>
+                            <p><strong>赛季战绩：</strong>58胜24负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2002')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2003年 -->
+                <div class="timeline-item" id="year-2003">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/OIP-C.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2003</div>
+                        <div class="timeline-player">蒂姆·邓肯</div>
+                        <div class="timeline-team">圣安东尼奥马刺</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>23.3分，12.9篮板，3.9助攻</p>
+                            <p><strong>特点：</strong>连续两年MVP，带领马刺夺冠</p>
+                            <p><strong>赛季战绩：</strong>60胜22负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2003')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2004年 -->
+                <div class="timeline-item" id="year-2004">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/屏幕截图_3-12-2025_215840_127.0.0.1.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2004</div>
+                        <div class="timeline-player">凯文·加内特</div>
+                        <div class="timeline-team">明尼苏达森林狼</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>24.2分，13.9篮板，5.0助攻</p>
+                            <p><strong>特点：</strong>全能型内线，攻防一体</p>
+                            <p><strong>赛季战绩：</strong>58胜24负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2004')">查看详情</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2005-2009时期 -->
+            <div class="timeline-period">
+                <h3>2005-2009：跑轰与全能前锋</h3>
+            </div>
+            
+            <div class="timeline">
+                <!-- 2005年 -->
+                <div class="timeline-item" id="year-2005">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/t01c196cb3c2afab39a.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2005</div>
+                        <div class="timeline-player">史蒂夫·纳什</div>
+                        <div class="timeline-team">菲尼克斯太阳</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>15.5分，11.5助攻，3.3篮板</p>
+                            <p><strong>特点：</strong>传球大师，跑轰战术核心</p>
+                            <p><strong>赛季战绩：</strong>62胜20负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2005')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2006年 -->
+                <div class="timeline-item" id="year-2006">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/t01c196cb3c2afab39a.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2006</div>
+                        <div class="timeline-player">史蒂夫·纳什</div>
+                        <div class="timeline-team">菲尼克斯太阳</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>18.8分，10.5助攻，4.2篮板</p>
+                            <p><strong>特点：</strong>连续两年MVP，投篮命中率50-40-90</p>
+                            <p><strong>赛季战绩：</strong>54胜28负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2006')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2007年 -->
+                <div class="timeline-item" id="year-2007">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/屏幕截图_3-12-2025_21581_127.0.0.1.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2007</div>
+                        <div class="timeline-player">德克·诺维茨基</div>
+                        <div class="timeline-team">达拉斯小牛</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>24.6分，8.9篮板，3.4助攻</p>
+                            <p><strong>特点：</strong>投篮精准的七尺长人</p>
+                            <p><strong>赛季战绩：</strong>67胜15负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2007')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2008年 -->
+                <div class="timeline-item" id="year-2008">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/OIP-C (3)3.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2008</div>
+                        <div class="timeline-player">科比·布莱恩特</div>
+                        <div class="timeline-team">洛杉矶湖人</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>28.3分，6.3篮板，5.4助攻</p>
+                            <p><strong>特点：</strong>首次获得MVP，得分后卫的代表</p>
+                            <p><strong>赛季战绩：</strong>57胜25负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2008')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2009年 -->
+                <div class="timeline-item" id="year-2009">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/OIP-C (1).jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2009</div>
+                        <div class="timeline-player">勒布朗·詹姆斯</div>
+                        <div class="timeline-team">克利夫兰骑士</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>28.4分，7.6篮板，7.2助攻</p>
+                            <p><strong>特点：</strong>首次获得MVP，全能战士</p>
+                            <p><strong>赛季战绩：</strong>66胜16负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2009')">查看详情</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2010-2014时期 -->
+            <div class="timeline-period">
+                <h3>2010-2014：詹姆斯时代与年轻新星</h3>
+            </div>
+            
+            <div class="timeline">
+                <!-- 2010年 -->
+                <div class="timeline-item" id="year-2010">
+                    <div class="timeline-content">
+                         <div class="player-image">
+                        <img src="图片/OIP-C (1).jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2010</div>
+                        <div class="timeline-player">勒布朗·詹姆斯</div>
+                        <div class="timeline-team">克利夫兰骑士</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>29.7分，7.3篮板，8.6助攻</p>
+                            <p><strong>特点：</strong>连续两年MVP，效率值历史最高</p>
+                            <p><strong>赛季战绩：</strong>61胜21负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2010')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2011年 -->
+                <div class="timeline-item" id="year-2011">
+                    <div class="timeline-content">
+                         <div class="player-image">
+                        <img src="图片/B0B1ADDE038E7032C99260D3C56D108EDDEDF514_size346_w2048_h1450.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2011</div>
+                        <div class="timeline-player">德里克·罗斯</div>
+                        <div class="timeline-team">芝加哥公牛</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>25.0分，7.7助攻，4.1篮板</p>
+                            <p><strong>特点：</strong>最年轻MVP，突破能力极强</p>
+                            <p><strong>赛季战绩：</strong>62胜20负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2011')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2012年 -->
+                <div class="timeline-item" id="year-2012">
+                    <div class="timeline-content">
+                         <div class="player-image">
+                        <img src="图片/OIP-C (1).jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2012</div>
+                        <div class="timeline-player">勒布朗·詹姆斯</div>
+                        <div class="timeline-team">迈阿密热火</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>27.1分，7.9篮板，6.2助攻</p>
+                            <p><strong>特点：</strong>第三次获得MVP，攻防一体</p>
+                            <p><strong>赛季战绩：</strong>46胜20负（缩水赛季）</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2012')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2013年 -->
+                <div class="timeline-item" id="year-2013">
+                    <div class="timeline-content">
+                         <div class="player-image">
+                        <img src="图片/OIP-C (1).jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2013</div>
+                        <div class="timeline-player">勒布朗·詹姆斯</div>
+                        <div class="timeline-team">迈阿密热火</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>26.8分，8.0篮板，7.3助攻</p>
+                            <p><strong>特点：</strong>第四次获得MVP，投篮命中率56%</p>
+                            <p><strong>赛季战绩：</strong>66胜16负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2013')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2014年 -->
+                <div class="timeline-item" id="year-2014">
+                    <div class="timeline-content">
+                         <div class="player-image">
+                        <img src="图片/OIP-C (2).jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2014</div>
+                        <div class="timeline-player">凯文·杜兰特</div>
+                        <div class="timeline-team">俄克拉荷马雷霆</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>32.0分，7.4篮板，5.5助攻</p>
+                            <p><strong>特点：</strong>得分王，历史级得分手</p>
+                            <p><strong>赛季战绩：</strong>59胜23负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2014')">查看详情</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2015-2019时期 -->
+            <div class="timeline-period">
+                <h3>2015-2019：三分革命与国际球员崛起</h3>
+            </div>
+            
+            <div class="timeline">
+                <!-- 2015年 -->
+                <div class="timeline-item" id="year-2015">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/3906038584057945128.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2015</div>
+                        <div class="timeline-player">斯蒂芬·库里</div>
+                        <div class="timeline-team">金州勇士</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>23.8分，7.7助攻，4.3篮板</p>
+                            <p><strong>特点：</strong>首次获得MVP，三分革命引领者</p>
+                            <p><strong>赛季战绩：</strong>67胜15负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2015')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2016年 -->
+                <div class="timeline-item" id="year-2016">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/3906038584057945128.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2016</div>
+                        <div class="timeline-player">斯蒂芬·库里</div>
+                        <div class="timeline-team">金州勇士</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>30.1分，6.7助攻，5.4篮板</p>
+                            <p><strong>特点：</strong>全票MVP，402个三分历史纪录</p>
+                            <p><strong>赛季战绩：</strong>73胜9负（历史最佳）</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2016')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2017年 -->
+                <div class="timeline-item" id="year-2017">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/19bf339a325a43c29cad96b4fb448632.jpeg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2017</div>
+                        <div class="timeline-player">拉塞尔·威斯布鲁克</div>
+                        <div class="timeline-team">俄克拉荷马雷霆</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>31.6分，10.7篮板，10.4助攻</p>
+                            <p><strong>特点：</strong>赛季场均三双，历史第一人</p>
+                            <p><strong>赛季战绩：</strong>47胜35负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2017')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2018年 -->
+                <div class="timeline-item" id="year-2018">
+                    <div class="timeline-content">
+                        <div class="player-image">
+                        <img src="图片/4E591F728A7336BE5FFD1E3190AAD4B19DDE028C_size365_w501_h375.jpg" loading="lazy">
+                        </div>
+                        <div class="timeline-year">2018</div>
+                        <div class="timeline-player">詹姆斯·哈登</div>
+                        <div class="timeline-team">休斯顿火箭</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>30.4分，8.8助攻，5.4篮板</p>
+                            <p><strong>特点：</strong>得分王，单打能力顶级</p>
+                            <p><strong>赛季战绩：</strong>65胜17负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2018')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2019年 -->
+                <div class="timeline-item" id="year-2019">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2019</div>
+                        <div class="timeline-player">扬尼斯·阿德托昆博</div>
+                        <div class="timeline-team">密尔沃基雄鹿</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>27.7分，12.5篮板，5.9助攻</p>
+                            <p><strong>特点：</strong>希腊怪物，身体天赋惊人</p>
+                            <p><strong>赛季战绩：</strong>60胜22负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2019')">查看详情</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2020-2024时期 -->
+            <div class="timeline-period">
+                <h3>2020-2024：新时代中锋与全能球员</h3>
+            </div>
+            
+            <div class="timeline">
+                <!-- 2020年 -->
+                <div class="timeline-item" id="year-2020">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-player">扬尼斯·阿德托昆博</div>
+                        <div class="timeline-team">密尔沃基雄鹿</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>29.5分，13.6篮板，5.6助攻</p>
+                            <p><strong>特点：</strong>连续两年MVP，攻防统治力</p>
+                            <p><strong>赛季战绩：</strong>56胜17负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2020')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2021年 -->
+                <div class="timeline-item" id="year-2021">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021</div>
+                        <div class="timeline-player">尼古拉·约基奇</div>
+                        <div class="timeline-team">丹佛掘金</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>26.4分，10.8篮板，8.3助攻</p>
+                            <p><strong>特点：</strong>组织中锋，技术全面</p>
+                            <p><strong>赛季战绩：</strong>47胜25负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2021')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2022年 -->
+                <div class="timeline-item" id="year-2022">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2022</div>
+                        <div class="timeline-player">尼古拉·约基奇</div>
+                        <div class="timeline-team">丹佛掘金</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>27.1分，13.8篮板，7.9助攻</p>
+                            <p><strong>特点：</strong>连续两年MVP，效率值历史级</p>
+                            <p><strong>赛季战绩：</strong>48胜34负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2022')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2023年 -->
+                <div class="timeline-item" id="year-2023">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <div class="timeline-player">乔尔·恩比德</div>
+                        <div class="timeline-team">费城76人</div>
+                        <div class="timeline-details">
+                            <p><strong>场均数据：</strong>33.1分，10.2篮板，4.2助攻</p>
+                            <p><strong>特点：</strong>得分王，内线技术全面</p>
+                            <p><strong>赛季战绩：</strong>54胜28负</p>
+                        </div>
+                        <button class="btn" onclick="toggleDetails('year-2023')">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 2024年 -->
+                <div class="timeline-item" id="year-2024">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-player">尼古拉·约基奇</div>
+                        <div class="timeline-team">丹佛掘金</div>
+                        <button class="btn" onclick="toggleDetails('year-2024')">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>网站导航</h3>
+                    <ul>
+                        <li><a href="index.html">主页</a></li>
+                        <li><a href="players.html">球员列表</a></li>
+                        <li><a href="stats.html">数据统计</a></li>
+                        <li><a href="timeline.html">时间线</a></li>
+                        <li><a href="awards.html">奖项详情</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>时间线分类</h3>
+                    <ul>
+                        <li><a href="#year-2000">2000-2004年</a></li>
+                        <li><a href="#year-2005">2005-2009年</a></li>
+                        <li><a href="#year-2010">2010-2014年</a></li>
+                        <li><a href="#year-2015">2015-2019年</a></li>
+                        <li><a href="#year-2020">2020-2024年</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>趋势分析</h3>
+                    <p>通过时间线可以观察篮球战术和球员类型的演变。</p>
+                    <p>从传统内线到三分革命，篮球风格不断变化。</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© <span class="current-year">2024</span> NBA MVP球员展示网站 | 时间线页面</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        function toggleDetails(yearId) {
+            const details = document.getElementById(yearId).querySelector('.timeline-details');
+            const button = document.getElementById(yearId).querySelector('button');
+            
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+                button.textContent = '收起详情';
+            } else {
+                details.style.display = 'none';
+                button.textContent = '查看详情';
+            }
+        }
+        
+        function expandAll() {
+            const allDetails = document.querySelectorAll('.timeline-details');
+            const allButtons = document.querySelectorAll('.timeline-content button');
+            
+            allDetails.forEach(details => {
+                details.style.display = 'block';
+            });
+            
+            allButtons.forEach(button => {
+                button.textContent = '收起详情';
+            });
+        }
+        
+        function collapseAll() {
+            const allDetails = document.querySelectorAll('.timeline-details');
+            const allButtons = document.querySelectorAll('.timeline-content button');
+            
+            allDetails.forEach(details => {
+                details.style.display = 'none';
+            });
+            
+            allButtons.forEach(button => {
+                button.textContent = '查看详情';
+            });
+        }
+        
+        function scrollToYear(year) {
+            const element = document.getElementById(`year-${year}`);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                element.style.backgroundColor = '#fff8e1';
+                element.style.transition = 'background-color 0.5s';
+                
+                setTimeout(() => {
+                    element.style.backgroundColor = '';
+                }, 2000);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const recentYears = [2023, 2022, 2021, 2020, 2019];
+            recentYears.forEach(year => {
+                const element = document.getElementById(`year-${year}`);
+                if (element) {
+                    const details = element.querySelector('.timeline-details');
+                    const button = element.querySelector('button');
+                    if (details && button) {
+                        details.style.display = 'block';
+                        button.textContent = '收起详情';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
